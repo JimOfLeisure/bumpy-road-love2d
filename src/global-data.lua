@@ -9,7 +9,6 @@ local Vec2 = require("generics.vec2")
 Global = {
     pos = Vec2:new(0, default_y),
     angle = default_angle,
-    default_angle = default_angle,
     parachute_deploys = 0,
 }
 

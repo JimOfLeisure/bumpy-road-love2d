@@ -1,13 +1,13 @@
 local Game_scene = {}
 
 local Game_component = require("generics.game-component")
-local Background = require("Background")
+local Sky = require("Sky")
 
 function Game_scene:new()
     local gs = Game_component:new()
     gs.components = {}
 
-    table.insert(gs.components, Background:new())
+    table.insert(gs.components, Sky:new())
 
     function gs:load()
         for _, component in ipairs(self.components) do

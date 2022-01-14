@@ -4,9 +4,10 @@
 local default_angle = math.pi / 2 - 0.2
 local default_y = 0
 
+local Vec2 = require("generics.vec2")
+
 Global = {
-    x = 0,
-    y = default_y,
+    pos = Vec2:new(0, default_y),
     angle = default_angle,
     default_angle = default_angle,
     parachute_deploys = 0,

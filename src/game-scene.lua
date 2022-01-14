@@ -11,8 +11,10 @@ conf.x_offset = love.graphics.getWidth() / 2 - 100
 conf.y_offset = love.graphics.getHeight() / 2
 
 local Game_component = require("generics.game-component")
+local Vec2 = require("generics.vec2")
 local Sky = require("Sky")
 local Ball = require("Ball")
+local Ground = require("Ground")
 
 local camera_on = Game_component:new()
 function camera_on:draw()
@@ -40,6 +42,10 @@ function Game_scene:new()
         table.insert(self.components, Sky:new())
         table.insert(self.components, camera_on)
         table.insert(self.components, self.ball)
+        -- TODO: parameterize x/i and y
+        for i=0,1100,100 do
+            table.insert(self.components, Ground:new(self.world, Vec2:new(i, 500)))
+        end
         table.insert(self.components, camera_off)
         for _, component in ipairs(self.components) do
             component:load()

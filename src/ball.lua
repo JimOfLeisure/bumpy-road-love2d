@@ -6,18 +6,49 @@ local Vec2 = require("generics.vec2")
 -- optimizations
 local graphics = love.graphics
 
-function Ball:new()
+local shader_string = [[
+    extern vec2 u_texture_size;
+    extern vec2 u_highlight_pos;
+
+    vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ) {
+        float dist = distance(screen_coords, u_highlight_pos) / max(u_texture_size.x, u_texture_size.y);
+        dist = dist * 0.8 - 0.2;
+        dist = 1.0 - clamp(dist, 0.0, 0.8);
+        vec4 pixel = Texel(texture, texture_coords);
+        pixel = pixel * vec4(dist, dist, dist, 1.0);
+        return pixel * color;
+    }
+]]
+
+
+-- requires a love.physics.world reference
+function Ball:new(world)
     local obj = Game_component:new()
     obj.pos = Vec2:new()
 
     function obj:load()
+        -- TODO: parameterize values
+        self.body = love.physics.newBody(world, METER_ORIGIN or 30, 30, "dynamic")
+        self.shape = love.physics.newCircleShape(25)
+        self.fixture = love.physics.newFixture(self.body, self.shape, 1)
+        self.fixture:setRestitution(0.6)
+        self.image = graphics.newImage("SoccerBall.png")
+        self.shader = graphics.newShader(shader_string)
     end
 
     function obj:update(dt)
+        global.pos.x = self.body:getX()
+        global.pos.y = self.body:getY()
     end
 
     function obj:draw()
-
+        graphics.setShader(self.shader)
+        self.shader:send("u_texture_size", { self.image:getWidth(), self.image:getHeight()})
+        -- TODO: don't hard-code the highlight position here
+        self.shader:send("u_highlight_pos", { graphics.getWidth() / 2 - 60 , graphics.getHeight() / 2 - 50 })
+        graphics.setColor(1, 1, 1)
+        graphics.draw(self.image,global.pos.x, global.pos.y, self.body:getAngle(), 0.55, nil, 50, 50 )
+        graphics.setShader()
     end
 
     return obj

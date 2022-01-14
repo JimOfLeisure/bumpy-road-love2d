@@ -6,12 +6,13 @@ local Ball = require("Ball")
 
 function Game_scene:new()
     local gs = Game_component:new()
+    gs.world = love.physics.newWorld()
+
     gs.components = {}
 
-    table.insert(gs.components, Sky:new())
-    table.insert(gs.components, Ball:new())
-
     function gs:load()
+        table.insert(self.components, Sky:new())
+        table.insert(self.components, Ball:new(self.world))
         for _, component in ipairs(self.components) do
             component:load()
         end

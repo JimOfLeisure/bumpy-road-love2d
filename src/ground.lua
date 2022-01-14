@@ -33,6 +33,10 @@ function Ground:new(world, pos)
         obj.shape = love.physics.newPolygonShape(coords)
         obj.fixture = love.physics.newFixture(obj.body, obj.shape)
     end
+    function obj:draw()
+        graphics.setColor(0.28, 0.63, 0.05)
+        graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
+    end
     obj:respawn(pos)
 
     return obj
@@ -58,11 +62,6 @@ function Ground:update(float_x)
     end
 end
 
-function Ground:draw()
-    graphics.setColor(0.28, 0.63, 0.05)
-    for _, section in ipairs(ground_sections) do
-        graphics.polygon("fill", section.body:getWorldPoints(section.shape:getPoints()))
-    end
 end
 ]]
 return Ground

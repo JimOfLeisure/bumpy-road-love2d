@@ -50,6 +50,8 @@ function Game_scene:new()
         for _, component in ipairs(self.components) do
             component:load()
         end
+        -- TEMP ?? probably needs x & y calculated
+        self.world:setGravity(0, conf.gravity)
     end
 
     function gs:update(dt)

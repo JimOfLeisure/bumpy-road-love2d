@@ -18,7 +18,7 @@ function Global:reset_angle()
 end
 
 function Global:reset_y()
-    self.y = default_y
+    self.pos.y = default_y
 end
 
 return Global

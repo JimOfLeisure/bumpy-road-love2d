@@ -2,12 +2,14 @@ local Game_scene = {}
 
 local Game_component = require("generics.game-component")
 local Sky = require("Sky")
+local Ball = require("Ball")
 
 function Game_scene:new()
     local gs = Game_component:new()
     gs.components = {}
 
     table.insert(gs.components, Sky:new())
+    table.insert(gs.components, Ball:new())
 
     function gs:load()
         for _, component in ipairs(self.components) do

@@ -10,6 +10,7 @@ local Parachute = require("parachute")
 local Ball = require("ball")
 local Ground = require("ground")
 local data = require("game-scene-data")
+local Screen_text = require("screen-text")
 
 local camera_on = Game_component:new()
 function camera_on:draw()
@@ -46,6 +47,8 @@ function Game_scene:new()
             table.insert(self.components, Ground:new(data, Vec2:new(i, 500)))
         end
         table.insert(self.components, camera_off)
+        table.insert(self.components, Screen_text:new(data, self.ball))
+
         for _, component in ipairs(self.components) do
             component:load()
         end
@@ -63,6 +66,22 @@ function Game_scene:new()
     function gs:draw()
         for _, component in ipairs(self.components) do
             component:draw()
+        end
+    end
+
+
+    function gs:mousepressed(x, y, button)
+        if button == 1 then
+            data.dragging = true
+            data.instructions = false
+            data.drag_x = x
+            data.drag_y = y
+        end
+    end
+
+    function gs:mousereleased(x, y, button)
+        if button == 1 then
+            data.dragging = false
         end
     end
 

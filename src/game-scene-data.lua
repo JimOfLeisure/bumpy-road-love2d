@@ -16,6 +16,7 @@ Data = {
     angle = default_angle,
     parachute_deployed = true,
     parachute_drag = 2.0,
+    instructions = true,
     stats = {
         parachute_deploys = 0,
     },

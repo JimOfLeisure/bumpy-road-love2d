@@ -1,4 +1,4 @@
-global = require("global-data")
+-- global = require("global-data")
 
 local Game_scene = require("game-scene")
 local game_scene = Game_scene:new()

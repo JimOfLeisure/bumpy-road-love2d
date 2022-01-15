@@ -20,25 +20,26 @@ local shader_string = [[
     }
 ]]
 
-
--- requires a love.physics.world reference
-function Ball:new(world)
+-- requires a love.physics.world reference from shared data table
+function Ball:new(data)
     local obj = Game_component:new()
     obj.pos = Vec2:new()
-
+    obj.data = data
     function obj:load()
         -- TODO: parameterize values
-        self.body = love.physics.newBody(world, METER_ORIGIN or 30, 30, "dynamic")
+        self.body = love.physics.newBody(self.data.world, METER_ORIGIN or 30, 30, "dynamic")
         self.shape = love.physics.newCircleShape(25)
         self.fixture = love.physics.newFixture(self.body, self.shape, 1)
         self.fixture:setRestitution(0.6)
         self.image = graphics.newImage("SoccerBall.png")
         self.shader = graphics.newShader(shader_string)
+        -- TEMP --
+        self.body:setAngularVelocity(2)
     end
 
     function obj:update(dt)
-        global.pos.x = self.body:getX()
-        global.pos.y = self.body:getY()
+        self.data.pos.x = self.body:getX()
+        self.data.pos.y = self.body:getY()
     end
 
     function obj:draw()
@@ -47,7 +48,7 @@ function Ball:new(world)
         -- TODO: don't hard-code the highlight position here
         self.shader:send("u_highlight_pos", { graphics.getWidth() / 2 - 60 , graphics.getHeight() / 2 - 50 })
         graphics.setColor(1, 1, 1)
-        graphics.draw(self.image,global.pos.x, global.pos.y, self.body:getAngle(), 0.55, nil, 50, 50 )
+        graphics.draw(self.image,data.pos.x, data.pos.y, self.body:getAngle(), 0.55, nil, 50, 50 )
         graphics.setShader()
     end
 

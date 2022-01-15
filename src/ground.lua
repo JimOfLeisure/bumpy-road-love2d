@@ -2,7 +2,6 @@ local Ground = {}
 
 -- optimization
 local graphics = love.graphics
-local global = global
 
 local Game_component = require("generics.game-component")
 local Vec2 = require("generics.vec2")
@@ -14,9 +13,9 @@ local BUMP_SCALE = 30
 local ground_sections = {}
 -- local world
 
-function Ground:new(world, pos)
+function Ground:new(data, pos)
     local obj = Game_component:new()
-    obj.world = world
+    obj.world = data.world
     function obj:respawn(pos)
         self.pos = pos
         self.body = love.physics.newBody(self.world, self.pos.x, self.pos.y, "static")

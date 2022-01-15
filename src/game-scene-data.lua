@@ -14,6 +14,7 @@ Data = {
     pos = Vec2:new(0, default_y),
     -- gravity & camera angle
     angle = default_angle,
+    parachute_deployed = true,
     stats = {
         parachute_deploys = 0,
     },

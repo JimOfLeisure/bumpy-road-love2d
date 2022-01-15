@@ -33,8 +33,6 @@ function Ball:new(data)
         self.fixture:setRestitution(0.6)
         self.image = graphics.newImage("SoccerBall.png")
         self.shader = graphics.newShader(shader_string)
-        -- TEMP --
-        self.body:setAngularVelocity(2)
     end
 
     function obj:update(dt)

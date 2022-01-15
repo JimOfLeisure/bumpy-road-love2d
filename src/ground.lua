@@ -11,14 +11,13 @@ local NOISE_ORIGIN = (love.math.random() -0.5) * 3000
 local NOISE_SCALE = 0.005
 local BUMP_SCALE = 30
 local ground_sections = {}
--- local world
 
 function Ground:new(data, pos)
     local obj = Game_component:new()
-    obj.world = data.world
+    obj.data = data
     function obj:respawn(pos)
         self.pos = pos
-        self.body = love.physics.newBody(self.world, self.pos.x, self.pos.y, "static")
+        self.body = love.physics.newBody(self.data.world, self.pos.x, self.pos.y, "static")
 
         local coords = {}
         for i=-50,50,20 do
@@ -38,29 +37,20 @@ function Ground:new(data, pos)
     end
     obj:respawn(pos)
 
-    return obj
-end
---[[
-function Ground:load(physics_world)
-    world = physics_world
-    for i=0,1100,100 do
-        table.insert(ground_sections, new_ground_section(i, 500))
-    end
-end
-
-function Ground:update(float_x)
-    local x = math.floor(float_x)
-    for i, section in ipairs(ground_sections) do
-        if x - section.body:getX() > 500 then
+    function obj:update()
+        local x = math.floor(self.data.pos.x)
+        if x - self.pos.x > 500 then
             -- hopefully releasing the memory this way; release() left the physics objects in place
-            section.fixture:destroy()
-            -- section.shape:destroy()
-            section.body:destroy()
-            ground_sections[i] = new_ground_section((math.floor(x / 100) * 100) + 700, 500)
+            self.fixture:destroy()
+            -- self.shape:destroy()
+            self.body:destroy()
+            self:respawn(Vec2:new((math.floor(x / 100) * 100) + 700, 500))
+            -- ground_sections[i] = new_ground_section((math.floor(x / 100) * 100) + 700, 500)
         end
     end
+    
+    return obj
 end
 
-end
-]]
+
 return Ground

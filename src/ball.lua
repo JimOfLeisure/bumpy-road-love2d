@@ -25,6 +25,7 @@ function Ball:new(data)
     local obj = Game_component:new()
     obj.pos = Vec2:new()
     obj.data = data
+
     function obj:respawn()
         self.body:setY(30)
         self.body:setX(self.body:getX() + 100)

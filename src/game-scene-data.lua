@@ -17,6 +17,8 @@ Data = {
     parachute_deployed = true,
     parachute_drag = 2.0,
     instructions = true,
+    min_angle = 0.2,
+    max_angle = 2.0,
     stats = {
         parachute_deploys = 0,
     },
@@ -36,6 +38,10 @@ end
 
 function Data:reset_angle()
     self.angle = default_angle
+end
+
+function Data:set_gravity()
+    self.world:setGravity(math.cos(self.angle) * self.conf.gravity, math.sin(self.angle) * self.conf.gravity)
 end
 
 function Data:reset_y()

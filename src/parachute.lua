@@ -18,8 +18,9 @@ function Parachute:new(data, target)
 
     function obj:update(dt)
         if data.pos.y > 750 then
-            self.target:reset()
+            self.target:respawn()
             data:reset_angle()
+            data:set_gravity()
         end
 
         if not data.parachute_deployed and data.pos.y <  200 then

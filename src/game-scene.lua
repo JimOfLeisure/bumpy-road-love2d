@@ -33,7 +33,7 @@ function Game_scene:new()
     gs.components = {}
 
     function gs:set_gravity()
-        data.world.setGravity(data.world, math.cos(data.angle) * data.conf.gravity, math.sin(data.angle) * data.conf.gravity)
+        data.world:setGravity(math.cos(data.angle) * data.conf.gravity, math.sin(data.angle) * data.conf.gravity)
     end
 
     function gs:load()
@@ -52,12 +52,16 @@ function Game_scene:new()
         for _, component in ipairs(self.components) do
             component:load()
         end
-        self:set_gravity()
+        data:set_gravity()
     end
 
     function gs:update(dt)
         data.world:update(dt)
 
+        if data.dragging then
+            self:dragging()
+        end
+    
         for _, component in ipairs(self.components) do
             component:update(dt)
         end
@@ -85,6 +89,26 @@ function Game_scene:new()
         end
     end
 
+    function gs:dragging()
+        if data.dragging then
+            local x = love.mouse.getX()
+            local y = love.mouse.getY()
+    
+            data.angle = data.angle + (data.drag_y - y) * 0.01
+            if data.angle < data.min_angle then
+                data.angle = data.min_angle
+            else
+                if data.angle > data.max_angle then
+                    data.angle = data.max_angle
+                end
+            end
+    
+            data.drag_x = x
+            data.drag_y = y
+            data:set_gravity()
+        end
+    end
+    
     return gs
 end
 

@@ -60,6 +60,12 @@ function Game_scene:new()
             data:reset_angle()
         end
 
+        if not data.parachute_deployed and data.pos.y <  200 then
+            data.parachute_deployed = true
+            data.stats.parachute_deploys = data.stats.parachute_deploys + 1
+            self.ball.body:setAngularDamping(0.9)
+        end
+    
         if data.parachute_deployed and data.pos.y > 400 then
             data.parachute_deployed = false
             self.ball.body:setAngularDamping(0)

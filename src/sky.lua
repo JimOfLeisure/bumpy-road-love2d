@@ -2,8 +2,8 @@ local Sky = {}
 
 local Game_component = require("generics.game-component")
 
--- optimizations
-local graphics = love.graphics
+-- optimization
+local love = love
 
 local shader_string = [[
     extern vec2 u_screen_size;
@@ -26,11 +26,11 @@ function Sky:new()
     end
 
     function bg:draw()
-        graphics.setShader(self.shader)
-        self.shader:send("u_screen_size", { graphics.getWidth(), graphics.getHeight()})
-        graphics.setColor(0.529, 0.808, 0.922)
-        graphics.rectangle("fill", 0, 0, graphics.getWidth(), graphics.getHeight())
-        graphics.setShader()
+        love.graphics.setShader(self.shader)
+        self.shader:send("u_screen_size", { love.graphics.getWidth(), love.graphics.getHeight()})
+        love.graphics.setColor(0.529, 0.808, 0.922)
+        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        love.graphics.setShader()
     end
 
     return bg

@@ -1,7 +1,7 @@
 local Ground = {}
 
 -- optimization
-local graphics = love.graphics
+local love = love
 
 local Game_component = require("generics.game-component")
 local Vec2 = require("generics.vec2")
@@ -32,8 +32,8 @@ function Ground:new(data, pos)
         obj.fixture = love.physics.newFixture(obj.body, obj.shape)
     end
     function obj:draw()
-        graphics.setColor(0.28, 0.63, 0.05)
-        graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
+        love.graphics.setColor(0.28, 0.63, 0.05)
+        love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
     end
     obj:respawn(pos)
 
@@ -45,7 +45,6 @@ function Ground:new(data, pos)
             -- self.shape:destroy()
             self.body:destroy()
             self:respawn(Vec2:new((math.floor(x / 100) * 100) + 700, 500))
-            -- ground_sections[i] = new_ground_section((math.floor(x / 100) * 100) + 700, 500)
         end
     end
     

@@ -44,8 +44,4 @@ function Data:set_gravity()
     self.world:setGravity(math.cos(self.angle) * self.conf.gravity, math.sin(self.angle) * self.conf.gravity)
 end
 
-function Data:reset_y()
-    self.pos.y = default_y
-end
-
 return Data

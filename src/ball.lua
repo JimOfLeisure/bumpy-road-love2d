@@ -4,7 +4,7 @@ local Game_component = require("generics.game-component")
 local Vec2 = require("generics.vec2")
 
 -- optimizations
-local graphics = love.graphics
+local love = love
 
 local shader_string = [[
     extern vec2 u_texture_size;
@@ -38,8 +38,8 @@ end;
         self.shape = love.physics.newCircleShape(25)
         self.fixture = love.physics.newFixture(self.body, self.shape, 1)
         self.fixture:setRestitution(0.6)
-        self.image = graphics.newImage("SoccerBall.png")
-        self.shader = graphics.newShader(shader_string)
+        self.image = love.graphics.newImage("SoccerBall.png")
+        self.shader = love.graphics.newShader(shader_string)
     end
 
     function obj:update(dt)
@@ -48,13 +48,13 @@ end;
     end
 
     function obj:draw()
-        graphics.setShader(self.shader)
+        love.graphics.setShader(self.shader)
         self.shader:send("u_texture_size", { self.image:getWidth(), self.image:getHeight()})
         -- TODO: don't hard-code the highlight position here
-        self.shader:send("u_highlight_pos", { graphics.getWidth() / 2 - 60 , graphics.getHeight() / 2 - 50 })
-        graphics.setColor(1, 1, 1)
-        graphics.draw(self.image,data.pos.x, data.pos.y, self.body:getAngle(), 0.55, nil, 50, 50 )
-        graphics.setShader()
+        self.shader:send("u_highlight_pos", { love.graphics.getWidth() / 2 - 60 , love.graphics.getHeight() / 2 - 50 })
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.draw(self.image,data.pos.x, data.pos.y, self.body:getAngle(), 0.55, nil, 50, 50 )
+        love.graphics.setShader()
     end
 
     return obj

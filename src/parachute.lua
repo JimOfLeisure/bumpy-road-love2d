@@ -34,11 +34,7 @@ function Parachute:new(data, target)
             self.target.body:setAngularDamping(0)
             if data.game_start then
                 data.game_start = false
-            --[[
-                history_100m[0] = timer
-                history_1km[0] = timer
-            ]]
-        end
+            end
         end
 
         if data.parachute_deployed then

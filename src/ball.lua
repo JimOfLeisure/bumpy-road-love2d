@@ -25,6 +25,12 @@ function Ball:new(data)
     local obj = Game_component:new()
     obj.pos = Vec2:new()
     obj.data = data
+    function obj:respawn()
+        self.body:setY(30)
+        self.body:setX(self.body:getX() + 100)
+        self.body:setLinearVelocity(0, 0)
+        self.body:setAngularVelocity(0)
+end;
     function obj:load()
         -- TODO: parameterize values
         self.body = love.physics.newBody(self.data.world, METER_ORIGIN or 30, 30, "dynamic")

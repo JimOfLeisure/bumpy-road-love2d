@@ -54,6 +54,24 @@ function Game_scene:new()
 
     function gs:update(dt)
         data.world:update(dt)
+
+        if data.pos.y > 750 then
+            ball:reset()
+            data:reset_angle()
+        end
+
+        if data.parachute_deployed and data.pos.y > 400 then
+            data.parachute_deployed = false
+            self.ball.body:setAngularDamping(0)
+            --[[
+            if data.game_start then
+                data.game_start = false
+                history_100m[0] = timer
+                history_1km[0] = timer
+            end
+            ]]
+        end
+    
         for _, component in ipairs(self.components) do
             component:update(dt)
         end

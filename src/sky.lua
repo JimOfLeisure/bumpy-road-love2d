@@ -1,4 +1,4 @@
-local Background = {}
+local Sky = {}
 
 local Game_component = require("generics.game-component")
 
@@ -16,7 +16,7 @@ local sky_shader = graphics.newShader([[
     }
 ]])
 
-function Background:new()
+function Sky:new()
     local bg = Game_component:new()
 
     function bg:load()
@@ -36,4 +36,4 @@ function Background:new()
     return bg
 end
 
-return Background
+return Sky

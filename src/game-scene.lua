@@ -55,6 +55,20 @@ function Game_scene:new()
     function gs:update(dt)
         data.world:update(dt)
 
+        self:manage_parachute()
+        
+        for _, component in ipairs(self.components) do
+            component:update(dt)
+        end
+    end
+
+    function gs:draw()
+        for _, component in ipairs(self.components) do
+            component:draw()
+        end
+    end
+
+    function gs:manage_parachute()
         if data.pos.y > 750 then
             ball:reset()
             data:reset_angle()
@@ -77,10 +91,7 @@ function Game_scene:new()
             end
             ]]
         end
-    
-        for _, component in ipairs(self.components) do
-            component:update(dt)
-        end
+
         if data.parachute_deployed then
             local sx, sy = self.ball.body:getLinearVelocity()
             self.ball.body:applyForce(-sx * data.parachute_drag, -sy * data.parachute_drag)
@@ -89,12 +100,6 @@ function Game_scene:new()
             if sx < 0 then
                 data.parachute_angle = data.parachute_angle + math.pi
             end
-        end
-    end
-
-    function gs:draw()
-        for _, component in ipairs(self.components) do
-            component:draw()
         end
     end
 

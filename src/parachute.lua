@@ -7,14 +7,48 @@ local Vec2 = require("generics.vec2")
 local graphics = love.graphics
 
 -- requires a love.physics.world reference from shared data table
-function Parachute:new(data)
+-- expects target to have a .body which is a love.physics.Body, and have a custom :reset() method
+function Parachute:new(data, target)
     local obj = Game_component:new()
     obj.data = data
+    obj.target = target
     obj.image = graphics.newImage("Parachute-icon.png")
     function obj:load()
     end
 
     function obj:update(dt)
+        if data.pos.y > 750 then
+            self.target:reset()
+            data:reset_angle()
+        end
+
+        if not data.parachute_deployed and data.pos.y <  200 then
+            data.parachute_deployed = true
+            data.stats.parachute_deploys = data.stats.parachute_deploys + 1
+            self.target.body:setAngularDamping(0.9)
+        end
+    
+        if data.parachute_deployed and data.pos.y > 400 then
+            data.parachute_deployed = false
+            self.target.body:setAngularDamping(0)
+            if data.game_start then
+                data.game_start = false
+            --[[
+                history_100m[0] = timer
+                history_1km[0] = timer
+            ]]
+        end
+        end
+
+        if data.parachute_deployed then
+            local sx, sy = self.target.body:getLinearVelocity()
+            self.target.body:applyForce(-sx * data.parachute_drag, -sy * data.parachute_drag)
+            -- 1.37 is a quarter turn because 0 is to the right; 0.8 is because parachute image is diagonal
+            data.parachute_angle = math.atan(sy / sx) -1.37 - 0.8
+            if sx < 0 then
+                data.parachute_angle = data.parachute_angle + math.pi
+            end
+        end
     end
 
     function obj:draw()

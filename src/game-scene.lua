@@ -39,7 +39,7 @@ function Game_scene:new()
         love.physics.setMeter(data.conf.meter_size)
         table.insert(self.components, Sky:new())
         table.insert(self.components, camera_on)
-        table.insert(self.components, Parachute:new(data))
+        table.insert(self.components, Parachute:new(data, self.ball))
         table.insert(self.components, self.ball)
         -- TODO: parameterize x/i and y
         for i=0,1100,100 do
@@ -55,8 +55,6 @@ function Game_scene:new()
     function gs:update(dt)
         data.world:update(dt)
 
-        self:manage_parachute()
-        
         for _, component in ipairs(self.components) do
             component:update(dt)
         end
@@ -65,41 +63,6 @@ function Game_scene:new()
     function gs:draw()
         for _, component in ipairs(self.components) do
             component:draw()
-        end
-    end
-
-    function gs:manage_parachute()
-        if data.pos.y > 750 then
-            ball:reset()
-            data:reset_angle()
-        end
-
-        if not data.parachute_deployed and data.pos.y <  200 then
-            data.parachute_deployed = true
-            data.stats.parachute_deploys = data.stats.parachute_deploys + 1
-            self.ball.body:setAngularDamping(0.9)
-        end
-    
-        if data.parachute_deployed and data.pos.y > 400 then
-            data.parachute_deployed = false
-            self.ball.body:setAngularDamping(0)
-            --[[
-            if data.game_start then
-                data.game_start = false
-                history_100m[0] = timer
-                history_1km[0] = timer
-            end
-            ]]
-        end
-
-        if data.parachute_deployed then
-            local sx, sy = self.ball.body:getLinearVelocity()
-            self.ball.body:applyForce(-sx * data.parachute_drag, -sy * data.parachute_drag)
-            -- 1.37 is a quarter turn because 0 is to the right; 0.8 is because parachute image is diagonal
-            data.parachute_angle = math.atan(sy / sx) -1.37 - 0.8
-            if sx < 0 then
-                data.parachute_angle = data.parachute_angle + math.pi
-            end
         end
     end
 

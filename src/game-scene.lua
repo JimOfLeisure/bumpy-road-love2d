@@ -4,17 +4,17 @@ local Game_scene = {}
 local love = love
 local global = global
 
-local conf = {}
-conf.meter_size = 64
-conf.gravity = 9.81 * conf.meter_size
-conf.x_offset = love.graphics.getWidth() / 2 - 100
-conf.y_offset = love.graphics.getHeight() / 2
-
 local Game_component = require("generics.game-component")
 local Vec2 = require("generics.vec2")
 local Sky = require("Sky")
 local Ball = require("Ball")
 local Ground = require("Ground")
+
+local conf = {}
+conf.meter_size = 64
+conf.gravity = 9.81 * conf.meter_size
+conf.x_offset = love.graphics.getWidth() / 2 - 100
+conf.y_offset = love.graphics.getHeight() / 2
 
 local camera_on = Game_component:new()
 function camera_on:draw()
@@ -37,6 +37,10 @@ function Game_scene:new()
     gs.ball = Ball:new(gs.world)
     gs.components = {}
 
+    function gs:set_gravity()
+        self.world.setGravity(self.world, math.cos(global.angle) * conf.gravity, math.sin(global.angle) * conf.gravity)
+    end
+
     function gs:load()
         love.physics.setMeter(conf.meter_size)
         table.insert(self.components, Sky:new())
@@ -51,7 +55,8 @@ function Game_scene:new()
             component:load()
         end
         -- TEMP ?? probably needs x & y calculated
-        self.world:setGravity(0, conf.gravity)
+        -- self.world:setGravity(0, conf.gravity)
+        self:set_gravity()
     end
 
     function gs:update(dt)

@@ -57,6 +57,15 @@ function Game_scene:new()
         for _, component in ipairs(self.components) do
             component:update(dt)
         end
+        if data.parachute_deployed then
+            local sx, sy = self.ball.body:getLinearVelocity()
+            self.ball.body:applyForce(-sx * data.parachute_drag, -sy * data.parachute_drag)
+            -- 1.37 is a quarter turn because 0 is to the right; 0.8 is because parachute image is diagonal
+            data.parachute_angle = math.atan(sy / sx) -1.37 - 0.8
+            if sx < 0 then
+                data.parachute_angle = data.parachute_angle + math.pi
+            end
+        end
     end
 
     function gs:draw()

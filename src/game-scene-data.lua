@@ -15,6 +15,7 @@ Data = {
     -- gravity & camera angle
     angle = default_angle,
     parachute_deployed = true,
+    parachute_drag = 2.0,
     stats = {
         parachute_deploys = 0,
     },

@@ -20,7 +20,7 @@ function Parachute:new(data)
     function obj:draw()
         if self.data.parachute_deployed then
             graphics.setColor(1, 1, 1)
-            graphics.draw(self.image, data.pos.x, data.pos.y, parachute_angle, 0.8, nil, 20, 125)
+            graphics.draw(self.image, data.pos.x, data.pos.y, data.parachute_angle, 0.8, nil, 20, 125)
         end
     end
 

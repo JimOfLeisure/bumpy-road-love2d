@@ -42,7 +42,7 @@ function Game_scene:new()
         table.insert(self.components, Parachute:new(data, self.ball))
         table.insert(self.components, self.ball)
         -- TODO: parameterize x/i and y
-        for i=0,1100,100 do
+        for i=-300,800,100 do
             table.insert(self.components, Ground:new(data, Vec2:new(i, 500)))
         end
         table.insert(self.components, camera_off)
